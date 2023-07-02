@@ -4,11 +4,14 @@ import { BudgetModel, IBudget } from '../db/models/budget.model';
 
 export default class BudgetService {
   public async getBudgets(): Promise<Array<IBudget>> {
-    return await BudgetModel.find({}).exec();
+    return await BudgetModel.find({ active: true }).exec();
   }
 
   public async getBudgetById(budgetId: string): Promise<IBudget> {
-    const entity = await BudgetModel.findById(budgetId).exec();
+    const entity = await BudgetModel.findOne({
+      _id: budgetId,
+      active: true,
+    }).exec();
     if (!entity) throw new Error('Not entity found.');
 
     return entity;
@@ -21,7 +24,7 @@ export default class BudgetService {
 
     const newBudget = new BudgetModel({
       ...budget,
-      name: capitalize(budget.name.toString()),
+      name: capitalize(budget.name),
       amountLeft: budget.amount,
       amountCanSpentByDay: this.calculateAmountCanBeSpentByDay(budget.amount),
     });

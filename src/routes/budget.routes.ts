@@ -9,15 +9,23 @@ const budgetService = new BudgetService();
 budgetRoutes.get(
   '/',
   asyncHandler(async (req, res) => {
-    const budgets = await budgetService.getBudgets();
-    res.send({ message: 'Get all budgets', budgets: budgets });
+    res.send({
+      message: 'Get all budgets',
+      budgets: await budgetService.getBudgets(),
+    });
   })
 );
 
-budgetRoutes.get('/:id', (req, res) => {
-  const { id } = req.params;
-  res.send({ message: `Get all budgets by id: ${id}` });
-});
+budgetRoutes.get(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    res.send({
+      message: 'Get budget by Id',
+      result: await budgetService.getBudgetById(id),
+    });
+  })
+);
 
 budgetRoutes.post(
   '/',
@@ -31,12 +39,26 @@ budgetRoutes.post(
   })
 );
 
-budgetRoutes.put('/', (req, res) => {
-  res.send({ message: 'Update budget' });
-});
+budgetRoutes.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const newBudget = validateBudget(req.body);
+    res.send({
+      message: `Updated budget ${id}`,
+      result: await budgetService.updateBudget(id, newBudget),
+    });
+  })
+);
 
-budgetRoutes.delete('/:id', (req, res) => {
-  res.send({ message: 'Delete budget' });
-});
+budgetRoutes.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    //TODO: Add validator to make sure it delete the record.
+    budgetService.deleteBudget(id);
+    res.send({ message: `Deleted budget ${id}` });
+  })
+);
 
 export default budgetRoutes;

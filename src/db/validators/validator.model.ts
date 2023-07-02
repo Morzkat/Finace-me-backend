@@ -30,6 +30,7 @@ const budgetModel = Joi.object({
   amountSpent: Joi.number().default(0),
   amountLeft: Joi.number(),
   amountCanSpentByDay: Joi.number(),
+  active: Joi.boolean().default(true),
 });
 
 const validateBudget = (payload: object) => validator(budgetModel, payload);

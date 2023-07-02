@@ -5,6 +5,7 @@ import bodyParse from 'body-parser';
 // App routes import
 import budgetRoutes from './routes/budget.routes';
 import DatabaseManager from './db/database-manager';
+import errorHandler from './middlewares/error-handler';
 
 const PORT = 4000;
 
@@ -26,6 +27,8 @@ app.use('/api/budgets', budgetRoutes);
 app.get('/', (req, res) => {
   res.send({ message: 'App up and running...' });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App running on port: ${PORT}`);
