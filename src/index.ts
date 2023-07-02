@@ -4,6 +4,7 @@ import bodyParse from 'body-parser';
 
 // App routes import
 import budgetRoutes from './routes/budget.routes';
+import DatabaseManager from './db/database-manager';
 
 const PORT = 4000;
 
@@ -11,6 +12,9 @@ const allowedOrigins = ['http://localhost:5173'];
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
 };
+
+const databaseManager = new DatabaseManager();
+databaseManager.setup('finance-me');
 
 const app = express();
 app.use(bodyParse.json());
