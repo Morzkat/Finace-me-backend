@@ -30,6 +30,9 @@ const budgetModel = Joi.object({
   amountSpent: Joi.number().default(0),
   amountLeft: Joi.number(),
   amountCanSpentByDay: Joi.number(),
+  currency: Joi.string().default('USD'),
+  period: Joi.string(),
+  wallet: Joi.string().default('Default wallet'),
   active: Joi.boolean().default(true),
 });
 
